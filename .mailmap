@@ -1,0 +1,3 @@
+# Canonical author identities for `git shortlog` and `git log --use-mailmap`.
+Cyril Allart <employee@example.invalid> SC-Cyril <employee@example.invalid>
+Cyril Allart <employee@example.invalid> <employee@example.invalid>
