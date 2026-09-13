@@ -1,0 +1,9 @@
+{
+  "account": "000000000000",
+  "archiveRepository": "example/prototype-archive",
+  "bucket": "example-prototype-storage",
+  "distributionId": "",
+  "domain": "prototypes.softwarecombined.com",
+  "expiryDays": 30,
+  "profile": "scg-prototypes"
+}
