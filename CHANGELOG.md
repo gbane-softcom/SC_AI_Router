@@ -2,6 +2,32 @@
 
 ## Unreleased
 
+## 1.3.4
+
+- Resolve the Windows Store Claude subscription profile from its current-user
+  package registration, including its `Network/Cookies` sign-in change detector.
+  Keep legacy cookie storage supported without reviving a stale sign-in.
+- Run the Windows Claude identity callback directly with literal arguments,
+  so it needs no Git Bash and supports spaces and shell characters in paths.
+- Preserve review-hook template bytes in Windows-built bundles so setup checks
+  agree with the executable Bash hooks already installed.
+
+- Accept canonical local file URLs during Windows source and native setup,
+  including spaces, Unicode and percent signs in the download folder.
+- Recognize Windows client-disconnect errors without treating them as an
+  upstream fault. Preserve hash-pinned runtime notices across Windows checkouts.
+- Preserve model labels and bundled instructions on Windows by reading them
+  as UTF-8, including refreshed model caches.
+- Stop asking for a key again when setup reports that a key is already stored.
+- Treat closing the Windows key window as Cancel; submit only with Save and connect.
+- Keep the native Windows migration fixture alive through slow Task Scheduler
+  calls, and verify the updater process survives independently of its task.
+- Make macOS identity mocks, exact-line-ending expectations and synthetic
+  credential fixtures portable; skip symlink cases only when Windows denies
+  the required privilege.
+- Read source-size checks as UTF-8 so contributor verification works on
+  Windows with its default non-UTF-8 encoding.
+
 ## 1.3.2
 
 - Publish the common setup and repair page independently of native-installer
