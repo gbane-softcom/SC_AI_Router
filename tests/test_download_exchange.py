@@ -48,7 +48,7 @@ class ExchangeTests(unittest.TestCase):
 
     def test_member_and_explicitly_assigned_resource_tenant_guest_receive_scoped_cookies(self):
         for claims in ({}, {'acct': '1', 'idp': 'https://sts.windows.net/guest-home-tenant/',
-                           'email': 'approved@portfolio.example'}):
+                           'email': 'employee@example.invalid'}):
             with self.subTest(claims=claims):
                 response = exchange.handler(event(**claims), None)
                 self.assertEqual(response['statusCode'], 200)
@@ -134,7 +134,7 @@ class ExchangeTests(unittest.TestCase):
         self.kms.sign.side_effect = RuntimeError('private-debug-payload')
         output = io.StringIO()
         with redirect_stdout(output), redirect_stderr(output):
-            response = exchange.handler(event(email='private-person@example.test'), None)
+            response = exchange.handler(event(email='employee@example.invalid'), None)
         self.assertEqual(response['statusCode'], 503)
         self.assertNotIn('cookies', response)
         self.assertEqual(output.getvalue(), '')

@@ -37,11 +37,11 @@ def load_tests(loader, tests, pattern):
 CONFIG = {
     "account": "000000000000",
     "archiveRepository": "example/prototype-archive",
-    "bucket": "example-prototype-storage",
-    "distributionId": "E1234567890ABC",
-    "domain": "prototypes.softwarecombined.com",
+    "bucket": "synthetic-prototype-bucket",
+    "distributionId": "ESYNTHETIC000000",
+    "domain": "prototypes.example.invalid",
     "expiryDays": 30,
-    "profile": "scg-prototypes",
+    "profile": "synthetic-prototypes",
 }
 class RecordingRunner:
     def __init__(self, status=" M prototypes.json\n"):
@@ -94,17 +94,18 @@ class PrototypeManifestTest(unittest.TestCase):
                     self.assertTrue(resolved.is_relative_to(plugin), target)
                     self.assertTrue(resolved.is_file(), target)
 
-    def test_channel_config_matches_the_deployed_channel_contract(self):
+    def test_bundled_channel_config_is_a_blank_non_operational_template(self):
         config = json.loads((ROOT / "plugins/scg-prototypes/skills/publish-prototype/references/channel.json").read_text())
-        self.assertEqual(config["account"], "000000000000")
-        self.assertEqual(config["bucket"], "example-prototype-storage")
-        self.assertEqual(config["domain"], "prototypes.softwarecombined.com")
-        self.assertEqual(config["archiveRepository"], "example/prototype-archive")
+        self.assertEqual(config["account"], "")
+        self.assertEqual(config["bucket"], "")
+        self.assertEqual(config["domain"], "")
+        self.assertEqual(config["archiveRepository"], "")
         self.assertEqual(config["expiryDays"], 30)
-        self.assertEqual(config["profile"], "scg-prototypes")
-        self.assertTrue(
-            config["distributionId"] == "" or re.fullmatch(r"E[A-Z0-9]+", config["distributionId"]),
-        )
+        self.assertEqual(config["profile"], "")
+        self.assertEqual(config["distributionId"], "")
+        with self.assertRaises(prototypes.ChannelError) as error:
+            prototypes.load_config(prototypes.DEFAULT_CONFIG_PATH)
+        self.assertIn("not configured", str(error.exception))
 
 
 class PrototypeOpsManifestTest(unittest.TestCase):
@@ -159,7 +160,7 @@ class PrototypeOpsManifestTest(unittest.TestCase):
         )
         commands = runner.joined()
         delete_index = next(index for index, command in enumerate(commands) if command.startswith(
-            "aws s3 rm --recursive s3://example-prototype-storage/prototypes/checkout-v2-7f3a/",
+            "aws s3 rm --recursive s3://synthetic-prototype-bucket/prototypes/checkout-v2-7f3a/",
         ))
         invalidation_index = next(index for index, command in enumerate(commands) if "create-invalidation" in command and "/checkout-v2-7f3a/*" in command)
         push_index = next(index for index, command in enumerate(commands) if command.endswith("push") and "git -C" in command)
