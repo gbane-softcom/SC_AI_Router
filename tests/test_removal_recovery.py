@@ -71,7 +71,7 @@ class RemovalRecoveryTests(unittest.TestCase):
         (self.home / 'activation.json').write_text(json.dumps(doc))
         before = self.settings.read_bytes()
         restore = mock.Mock()
-        with self.assertRaisesRegex(SystemExit, 'Open Switch Codex'):
+        with self.assertRaisesRegex(SystemExit, 'switched to OpenRouter only'):
             module('client_removal').remove_all(self.home, self.owner, restore)
         restore.assert_not_called()
         self.assertEqual(self.settings.read_bytes(), before)

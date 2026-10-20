@@ -76,7 +76,8 @@ A bootstrap install needs no checkout. Re-run the current setup script with
 `--choose-clients` (Windows: `-ChooseClients`), or use the
 [installed interpreter and installer](claude-code.md#setup).
 For Claude desktop, choose **Claude**, then **OpenRouter**, in the SCG Router menu.
-Claude restarts and keeps your saved Code tasks. Then choose Code, a folder and a
+Claude restarts on OpenRouter. The first switch sets up the OpenRouter profile; switch back and forth once to bring your saved Code tasks.
+Then choose Code, a folder and a
 model. All gateway rows bill OpenRouter. [Claude setup](claude-code.md) explains
 its separate profile and unfinished task-sharing checks.
 

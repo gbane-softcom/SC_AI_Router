@@ -6,7 +6,9 @@
 
 - Keep Claude desktop on the Claude subscription when you connect it, so the
   menu shows the connection Claude is really using. Setup then offers Switch
-  Claude, which restarts Claude on OpenRouter and shares your saved Code tasks.
+  Claude, which restarts Claude on OpenRouter. The first switch sets up the
+  OpenRouter profile instead of asking for a Code task that could not help;
+  switching back and forth once more shares your saved Code tasks.
   Before, connecting selected OpenRouter for the next launch, the menu ticked
   OpenRouter while Claude still ran on the subscription, and a plain reopen
   skipped task sharing.
