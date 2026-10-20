@@ -57,10 +57,11 @@ def attached_profile(home):
             raise ValueError('gateway was changed')
         if entry.get('bootstrapUrl'):
             raise ValueError('managed setup')
-        doc, config = _desktop.read_desktop_config(profile)
-        if config is None or doc.get('deploymentMode') not in DESTINATIONS:
+        doc, _ = _desktop.read_desktop_config(profile)
+        # Without a selection Claude runs on the subscription; attachment leaves it unset.
+        if doc.setdefault('deploymentMode', '1p') not in DESTINATIONS:
             raise ValueError('unknown selection')
-        return config, doc
+        return profile / 'claude_desktop_config.json', doc
     except (OSError, ValueError, TypeError, KeyError, SystemExit) as exc:
         raise SwitchError('Claude is not connected to SCG Router. Run setup again.') from exc
 

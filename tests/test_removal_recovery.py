@@ -164,6 +164,7 @@ class RemovalRecoveryTests(unittest.TestCase):
         profile = _profile(self.root)
         self.install._desktop_config.attach(self.home, self.state, self.owner, data_dir_override=profile)
         config = profile / 'claude_desktop_config.json'
+        config.write_text('{"deploymentMode":"3p"}')  # Switch Claude selected OpenRouter.
         removal, load = module('client_removal'), self.install._delivery._load
         real = removal._atomic.replace_text
         def fail_mode(path, *args, **kwargs):

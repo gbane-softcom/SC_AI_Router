@@ -309,9 +309,14 @@ With the router already installed, run this once from the router checkout:
 python3.14 packaging/install.py --desktop
 ```
 
-Quit and reopen Claude, choose **Code**, select your folder, then choose a
-model and type your task. No key copying or Developer-menu configuration is
-needed. Attachment also runs when there is no newer router release.
+Attachment leaves Claude on your Claude subscription, the connection it is
+already using. Choose **Claude**, then **OpenRouter**, in the
+[SCG Router menu](desktop-menu.md), or open **Switch Claude** on Mac. Without
+the menu, run `python3.14 packaging/claude_desktop_switch.py --to 3p`. Claude
+restarts on OpenRouter and keeps your saved Code tasks. Then choose **Code**,
+select your folder, choose a model and type your task. No key copying or
+Developer-menu configuration is needed. Attachment also runs when there is no
+newer router release.
 
 The task-sharing candidate detects the signed-in account and workspace when
 you open a Code task. On macOS, setup installs that background callback
