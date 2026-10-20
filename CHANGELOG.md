@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Identify an external provider's 403 block and suggest checking provider access
+  and policy restrictions, instead of misleadingly recommending a new chat.
+
 ## 1.3.5
 
 - Remove private environment identifiers and contact details from bundled

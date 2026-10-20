@@ -303,22 +303,25 @@ def describe_failure(exc, response, info):
     if response is not None:
         body = response.get('body', b'')
         context = is_context_error(body)
+        parsed = _provider_reason(body, dialect)
+        code = parsed[3] if parsed is not None else None
         if response.get('status') == 429 and not context:
             return None  # existing Retry-After path owns 429s
         if response.get('status') == 402:
             # Status alone names the cause: the key cannot afford the turn.
             # The code comes from fixed fields only; prose never classifies.
-            parsed = _provider_reason(response.get('body', b''), dialect)
-            code = parsed[3] if parsed is not None else None
             return 400, KEY_NO_CREDIT_MESSAGE.format(model=model), code
+        if response.get('status') == 403 and info.get('routed') and not context:
+            return 400, (f'{provider_defs.label_for(info.get("provider"))} blocked the request for '
+                         f'{model} (403 Forbidden). Select another model, or contact IT '
+                         'to check provider access and policy restrictions.'), code
         if (info.get('protocol') == provider_defs.RESPONSES
                 and not context
                 and (response.get('status', 0) >= 500 or response.get('status') == 408)):
             classified = outcome_of(response.get('status', 0), body, dialect)
             if classified.category == outcome.REFUSED:
-                parsed = _provider_reason(body, dialect)
                 reason = parsed[1] if parsed is not None else 'the request was rejected'
-                code = classified.code or (parsed[3] if parsed is not None else None)
+                code = classified.code or code
                 message = f'{model} refused this request: {reason}. Do not retry it unchanged'
                 if info.get('routed'):
                     message += (' Switch this thread back to the previous model, '
@@ -326,7 +329,6 @@ def describe_failure(exc, response, info):
                 return 400, message, code
             return 503, (f'{model} is temporarily unavailable and the turn was '
                          'not served. Retry shortly.'), None
-        parsed = _provider_reason(body, dialect)
         if parsed is None:
             if context:
                 return (409, f'{model} refused this request: the request was rejected. '

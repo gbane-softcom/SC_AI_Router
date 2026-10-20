@@ -293,6 +293,12 @@ is `true` in the client's `env` block. See `docs/claude-code.md`.
 | 409 | The provider cannot serve this request, for example an unsupported reasoning level; the message names the allowed levels |
 | 503 with `Retry-After` | Not served: the router is draining for an update (`SERVER_DRAINING`) or mapped an upstream 429 (`UPSTREAM_RATE_LIMITED`); retry after the delay. A refused subscription turn names the model and the subscription: retry shortly, or select a routed model |
 
+When a message names an external provider and `403 Forbidden`, that provider
+blocked the request. Select another model, or ask IT to check provider access
+and policy restrictions. The status alone does not identify the restriction;
+starting a new chat is not an established remedy. A key that separately fails
+the credential check still opens the existing key setup window.
+
 `BODY_TOO_LARGE` (`400`) means the request exceeds the router's local 256 MiB
 ceiling on sent or decompressed bytes. Native history and images are preserved;
 external Responses can shorten old content before sending it. Reduce large
